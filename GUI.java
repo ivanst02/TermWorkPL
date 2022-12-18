@@ -30,7 +30,7 @@ public class GUI extends Frame {
         menu.setTitle("Menu");
         menu.setVisible(true);
 
-        //Изборът на примитив, който ще се въвежда, да става чрез ?????меню???????
+        //Изборът на примитив, който ще се въвежда, да става чрез меню
         objLab.setBounds(10, 0, 90, 75);
         colorLab.setBounds(10, 225, 90, 75);
         lineCB.setBounds(10, 75, 90, 75);
