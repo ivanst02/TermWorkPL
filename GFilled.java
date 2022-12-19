@@ -1,9 +1,9 @@
 import java.awt.*;
 
-public class GLine implements GPrimitive {
+public class GFilled implements GPrimitive{
     Color workColor;
     Point startPoint, endPoint;
-    GLine() {
+    GFilled() {
         startPoint = Canvas.getStartPoint();
         endPoint = Canvas.getEndPoint();
         workColor = GUI.getWorkColor();
@@ -11,6 +11,6 @@ public class GLine implements GPrimitive {
     @Override
     public void drawPrimitive(Graphics g) {
         g.setColor(workColor);
-        g.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+        g.fillRect(startPoint.x, startPoint.y, endPoint.x - startPoint.x, endPoint.y - startPoint.y);
     }
 }

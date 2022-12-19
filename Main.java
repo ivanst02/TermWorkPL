@@ -1,7 +1,5 @@
 public class Main {
     public static void main(String[] args) {
-
-        GUI screen = new GUI();
-        screen.makeFrames();
+        Canvas canvas = new Canvas();
     }
 }

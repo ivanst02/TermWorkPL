@@ -1,138 +1,72 @@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.Menu;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class GUI extends Frame {
-    int objChoice = 0;
-    Color workColor = null;
-    boolean filled = false;
-    Point startPoint = null;
-    Point endPoint = null;
-    Frame canvas = new Frame();
-    Frame menu = new Frame();
-    Label objLab = new Label("Object:");
-    Label colorLab = new Label("Select color:");
-    CheckboxGroup objGroup = new CheckboxGroup();
-    Checkbox rectCB = new Checkbox("Rectangle", objGroup, false);
-    Checkbox lineCB = new Checkbox("Line", objGroup, false);
-    CheckboxGroup colorGroup = new CheckboxGroup();
-    Checkbox blueCB = new Checkbox("Blue", colorGroup, false);
-    Checkbox redCB = new Checkbox("Red", colorGroup, false);
-    Checkbox fillCB = new Checkbox("Fill", false);
-    public void makeFrames() {
-        //Потребителският интерфейс и самите графични примитиви да сa разположени в два отделни прозореца
-        // Canvas & Menu
-        canvas.setSize(700, 450);
-        canvas.setLayout(null);
-        canvas.setTitle("Canvas");
-        canvas.setVisible(true);
-        menu.setSize(200, 450);
-        menu.setLayout(null);
-        menu.setTitle("Menu");
-        menu.setVisible(true);
-
-        //Изборът на примитив, който ще се въвежда, да става чрез меню
-        objLab.setBounds(10, 0, 90, 75);
-        colorLab.setBounds(10, 225, 90, 75);
-        lineCB.setBounds(10, 75, 90, 75);
-        rectCB.setBounds(10, 150, 90, 75);
-        blueCB.setBounds(10, 300, 90, 75);
-        redCB.setBounds(10, 375, 90, 75);
-        fillCB.setBounds(110, 150, 90, 75);
-        menu.add(objLab); menu.add(colorLab); menu.add(lineCB);
-        menu.add(rectCB); menu.add(redCB); menu.add(blueCB); menu.add(fillCB);
-    }
-
+    public static int obj;
+    public static Color workColor;
     GUI() {
-        ItemListener objListener = new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent itemEvent) {
-                if (lineCB.getState()) {
-                    objChoice = 1;
-                    System.out.println("obj 1");
-                }
-                else if (rectCB.getState()) {
-                    objChoice = 2;
-                    System.out.println("obj 2");
-                }
-            }
-        };
-        ItemListener colorListener = new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent itemEvent) {
-                if(redCB.getState()) {
-                    workColor = Color.RED;
-                    System.out.println(workColor);
-                }
-                else if (blueCB.getState()) {
-                    workColor = Color.BLUE;
-                    System.out.println(workColor);
-                }
+        setTitle("Menu");
+        setSize(700, 100);
+        setVisible(true);
 
-            }
-        };
-        ItemListener checkFilled = new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent itemEvent) {
-                filled = fillCB.getState();
-                System.out.println("filled changed");
-            }
-        };
-        redCB.addItemListener(colorListener);
-        blueCB.addItemListener(colorListener);
-        lineCB.addItemListener(objListener);
-        rectCB.addItemListener(objListener);
-        fillCB.addItemListener(checkFilled);
+        MenuBar mb = new MenuBar();
+        Menu menuItem = new Menu("Item");
+        MenuItem itemRect = new MenuItem("Rectangle");
+        MenuItem itemLine = new MenuItem("Line");
+        MenuItem itemFill = new MenuItem("Filled Rectangle");
+        menuItem.add(itemLine); menuItem.add(itemRect); menuItem.add(itemFill);
+        Menu menuColor = new Menu("Color");
+        MenuItem itemBlue = new MenuItem("Blue");
+        MenuItem itemRed = new MenuItem("Red");
+        menuColor.add(itemBlue); menuColor.add(itemRed);
+        mb.add(menuColor); mb.add(menuItem);
+        setMenuBar(mb);
 
-        canvas.addMouseListener(new MouseAdapter() {
+        itemRect.addActionListener(new ActionListener() {
             @Override
-            public void mousePressed(MouseEvent e) {
-                startPoint = e.getPoint();
-                System.out.println("mouse pressed" + startPoint);
-            }
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                startPoint = null;
-                System.out.println("mouse released");
+            public void actionPerformed(ActionEvent e) {
+                obj = 2;
             }
         });
-        canvas.addMouseMotionListener(new MouseMotionAdapter() {
+        itemLine.addActionListener(new ActionListener() {
             @Override
-            public void mouseMoved(MouseEvent e) {
-                endPoint = e.getPoint();
-            }
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                endPoint = e.getPoint();
-                canvas.repaint();
+            public void actionPerformed(ActionEvent e) {
+                obj = 1;
             }
         });
-
-        canvas.addWindowListener(new WindowAdapter() {
+        itemFill.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                obj = 3;
+            }
+        });
+        itemBlue.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                workColor = Color.BLUE;
+            }
+        });
+        itemRed.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                workColor = Color.RED;
+            }
+        });
+        addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                canvas.dispose();
-                menu.dispose();
+                dispose();
             }
         });
     }
-
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        System.out.println("asd");
-        if (startPoint != null) {
-            g.setColor(Color.RED);
-            g.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
-        }
-    }
-
-    public Point getStartPoint() {
-        return startPoint;
-    }
-    public Point getEndPoint() {
-        return endPoint;
-    }
-    public Color getWorkColor() {
+    public static Color getWorkColor(){
         return workColor;
+    }
+    public static int getObj(){
+        return obj;
     }
 }
